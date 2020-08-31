@@ -17,6 +17,8 @@ def extract_freqs(graph, size, random=0, algo='gtrie', threads=cpu_count(), outp
     import os
     from bs4 import BeautifulSoup
     import pickle
+    import networkx as nx
+    import numpy as np
 
 
     path_to_examples = '../output/temp/'
@@ -86,12 +88,12 @@ def extract_freqs(graph, size, random=0, algo='gtrie', threads=cpu_count(), outp
     normed_freqs_4 = freqs_4 / sum_of_freqs_4
 
     normed_z_scores_4 = z_scores_4 / np.sqrt(np.sum([x**2 for x in z_scores_4])) if np.sum(z_scores_4) != 0 else np.zeros(6)
-    
-    return list(normed_freqs_4)#, list(normed_z_scores_4)
+    return list(normed_freqs_4) + list(normed_z_scores_4) if random else list(normed_freqs_4)
 
 def calc_iter(g, beta=0.2, percentage_infected=0.01, estimations=10):    
     import ndlib.models.epidemics as ep
     import ndlib.models.ModelConfig as mc
+    import numpy as np
     len_nodes = len(g.nodes())
     
     list_of_iter = []
